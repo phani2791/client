@@ -1,0 +1,12 @@
+<div class="row vertical-center-row">
+  <div class=" col-md-4 col-md-offset-4">
+    <form [formGroup]="form" (ngSubmit)="submit(userModel)">
+      <formly-form [model]="userModel" [fields]="userFields">
+        <a class="pull-right" (click)="navigate('/home/forgotpassword')">Forgot Password</a>
+        <br>
+        <br>
+        <button type="submit" class="btn btn-block btn-primary">Submit</button>
+      </formly-form>
+    </form>
+  </div>
+</div>

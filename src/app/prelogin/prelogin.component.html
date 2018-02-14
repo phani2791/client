@@ -1,0 +1,15 @@
+<div class="container-fluid" [ngClass]="'child-container'">
+  <nav class="navbar navbar-default navbar-dark navbar-static-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" [routerLink]="['login']" routerLinkActive="active">Brand</a>
+      </div>
+      <ul class="nav navbar-nav pull-right">
+        <li><a [routerLink]="['login']" routerLinkActive="active">Login</a></li>
+        <li><a [routerLink]="['signup']" routerLinkActive="active">Signup</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <router-outlet></router-outlet>
+  </div>
