@@ -1,12 +1,7 @@
-import {
-  Component,
-  OnInit
-}                  from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
-import {
-  FormlyFieldConfig,
-  FormlyFormOptions
-}                  from '@ngx-formly/core';
+import {FormlyFieldConfig, FormlyFormOptions} from '@ngx-formly/core';
+import {ApiService} from '../../services/api.service';
 
 @Component({
   selector: 'app-signup',
@@ -15,7 +10,7 @@ import {
 })
 export class SignupComponent implements OnInit {
 
-  constructor() {
+  constructor(private api: ApiService) {
   }
 
   form = new FormGroup({});
@@ -66,7 +61,7 @@ export class SignupComponent implements OnInit {
   ];
 
   submit(user) {
-    console.log(user);
+    this.api.signUp('/users', this.model).subscribe(result => console.log(result));
   }
 
   ngOnInit() {

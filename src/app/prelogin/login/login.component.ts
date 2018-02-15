@@ -3,6 +3,7 @@ import {FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {FormlyFieldConfig} from '@ngx-formly/core';
 import {ApiService} from '../../services/api.service';
+import {StorageService} from '../../services/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -10,9 +11,9 @@ import {ApiService} from '../../services/api.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
+  currentUser
   form = new FormGroup({});
-  userModel = {};
+  userModel = {email: 'admin@mailinator.com', password: 'thebest1'};
   userFields: Array<FormlyFieldConfig> = [{
     key: 'email',
     type: 'input',
@@ -33,18 +34,32 @@ export class LoginComponent implements OnInit {
     }
   }];
 
-  constructor(private router: Router, private api: ApiService) {
-    console.log(this.api)
+  constructor(private router: Router, private api: ApiService, private storageService: StorageService) {
   }
 
-  submit(user) {
-    console.log(user);
+  submit() {
+    this.api.login('/auth', this.userModel).subscribe(result => {
+      console.log(result);
+      this.storageService.session.setItem('token', result.token);
+      if (result.user.role === 'admin') {
+        this.router.navigate(['/admin/home'])
+      } else {
+        this.router.navigate(['/user/home'])
+      }
+    });
   }
 
   navigate(url) {
     this.router.navigate([url]);
   }
 
+  getAllUsers() {
+    this.api.allUsers('/users', {}).subscribe(result => console.log(result));
+  }
+
+  getMe() {
+    this.api.allUsers('/users/me', {}).subscribe(result => this.currentUser = result);
+  }
   ngOnInit() {
   }
 

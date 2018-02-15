@@ -6,6 +6,6 @@
 export const environment = {
   production: false,
   serverUrl: {
-    basePath: 'http:localhost:3000/api'
+    basePath: 'http://localhost:3000/api'
   }
 };

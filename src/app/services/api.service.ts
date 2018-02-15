@@ -1,95 +1,80 @@
 import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/toPromise';
-import {environment} from '../../environments/environment';
-import {StorageService} from './storage.service';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {RequestOptions} from '@angular/http';
+
+import {Observable} from 'rxjs/Observable';
+import {catchError} from 'rxjs/operators';
+import {environment} from '../../environments/environment';
+
+import {HandleError, HttpErrorHandler} from '../http-error-handler.service';
+import {AuthService} from '../auth.service';
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': 'my-auth-token'
+  })
+};
 
 @Injectable()
 export class ApiService {
+  private baseUrl;
+  private handleError: HandleError;
 
-  myParams: any;
-
-  constructor(private http: HttpClient, private storageService: StorageService, private router: Router) {
-    console.log(environment)
+  constructor(private http: HttpClient,
+              httpErrorHandler: HttpErrorHandler,
+              private auth: AuthService) {
+    this.handleError = httpErrorHandler.createHandleError('ApiService');
+    this.baseUrl = environment.serverUrl.basePath
   }
 
-  extendObject(obj, src) {
-    Object.keys(src).forEach(function (key) {
-      obj[key] = src[key];
-    });
-    return obj;
-  }
+  const
+  authToken = 'access_token=' + this.auth.getAuthorizationToken();
 
-  get(params, endpoint): Promise<{}> {
-    const
-      headers = new HttpHeaders(
-        {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + this.storageService.session.getItem('token')
-        });
-    if (params) {
-      let myParams = new URLSearchParams();
-      myParams = this.extendObject(myParams, params)
+  formatData(obj) {
+    let s = '';
+    for (const u in obj) {
+      s += `${u}=${obj[u]}&`;
     }
-    const options = new RequestOptions({headers: headers, params: this.myParams});
-    return this
-      .http
-      .get(environment.services.serverApi + endpoint, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleErrorPromise);
+    s = s + this.authToken;
+    return s
   }
 
-  post(data, endpoint): Promise<{}> {
-    const headers = new Headers(
-      {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.storageService.session.getItem('token'),
-        'Access-Control-Allow-Origin': '*'
-      });
-    const options = new RequestOptions({headers: headers});
-    return this
-      .http
-      .post(environment.services.serverApi + endpoint, data, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleErrorPromise);
+  /** PUT: update the hero on the server. Returns the updated hero upon success. */
+  signUp(endPoint, user): Observable<any> {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded'
+      })
+    }
+    return this.http.post<any>(this.baseUrl + endPoint, this.formatData(user), options)
+      .pipe(
+        catchError(this.handleError('post', user))
+      );
   }
 
-  put(data, endpoint): Promise<{}> {
-    const headers = new Headers(
-      {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + this.storageService.session.getItem('token'),
-        'Access-Control-Allow-Origin': '*'
-      });
-    const options = new RequestOptions({headers: headers});
-    return this
-      .http
-      .put(environment.services.serverApi + endpoint, data, options)
-      .toPromise()
-      .then(this.extractData)
-      .catch(this.handleErrorPromise);
+  login(endPoint, user): Observable<any> {
+    const options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': 'Basic ' + btoa(user.email + ':' + user.password)
+        })
+      }
+    ;
+    const url = this.baseUrl + endPoint;
+    return this.http.post<any>(url, this.authToken, options)
   }
 
-  private extractData(res: Response) {
-    const body = res.json();
-    // console.log(body)
-    return body || {};
+  allUsers(endPoint, params): Observable<any[]> {
+    return this.http.get<any>(this.baseUrl + endPoint)
+      .pipe(
+        catchError(this.handleError('get', []))
+      );
   }
-
-  private handleErrorPromise(error: Response | any) {
-    console.log(error);
-    return Promise.reject(error.message || error);
-
-  }
-
-  private redirect(error) {
-    this.router.navigate(['/']);
-    return Promise.reject(error.message || error);
-  }
-
 }
+
+
+/*
+Copyright 2017-2018 Google Inc. All Rights Reserved.
+Use of this source code is governed by an MIT-style license that
+can be found in the LICENSE file at http://angular.io/license
+*/

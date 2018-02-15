@@ -1,11 +1,11 @@
 <div class="container-fluid" [ngClass]="'child-container'">
   <nav class="navbar navbar-default navbar-dark navbar-static-top">
     <div class="container-fluid">
-      <div class="navbar-header">
+      <div class="navbar-header" (click)="navigate('/admin/home')">
         <a class="navbar-brand">Admin</a>
       </div>
       <ul class="nav navbar-nav pull-right">
-        <li><a>Logout</a></li>
+        <li (click)="navigate('/home')"><a>Logout</a></li>
       </ul>
     </div>
   </nav>
