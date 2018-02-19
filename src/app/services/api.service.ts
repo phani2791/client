@@ -64,7 +64,7 @@ export class ApiService {
     return this.http.post<any>(url, this.authToken, options)
   }
 
-  allUsers(endPoint, params): Observable<any[]> {
+  get(endPoint, params): Observable<any[]> {
     return this.http.get<any>(this.baseUrl + endPoint)
       .pipe(
         catchError(this.handleError('get', []))

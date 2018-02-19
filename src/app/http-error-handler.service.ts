@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpErrorResponse } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import {Observable} from 'rxjs/Observable';
+import {of} from 'rxjs/observable/of';
 
-import { MessageService } from './message.service';
+import {MessageService} from './message.service';
+import {ToastrService} from 'ngx-toastr';
 
 /** Type of the handleError function returned by HttpErrorHandler.createHandleError */
 export type HandleError =
@@ -13,7 +14,8 @@ export type HandleError =
 /** Handles HttpClient errors */
 @Injectable()
 export class HttpErrorHandler {
-  constructor(private messageService: MessageService) { }
+  constructor(private messageService: MessageService, private toastr: ToastrService) {
+  }
 
   /** Create curried handleError function that already knows the service name */
   createHandleError = (serviceName = '') => <T>
@@ -27,18 +29,18 @@ export class HttpErrorHandler {
    * @param result - optional value to return as the observable result
    */
   handleError<T> (serviceName = '', operation = 'operation', result = {} as T) {
+    console.error(serviceName); // log to console instead
 
     return (error: HttpErrorResponse): Observable<T> => {
       // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
 
       const message = (error.error instanceof ErrorEvent) ?
         error.error.message :
        `server returned code ${error.status} with body "${error.error}"`;
 
       // TODO: better job of transforming error for user consumption
-      this.messageService.add(`${serviceName}: ${operation} failed: ${message}`);
-
+      // this.messageService.add(`${serviceName}: ${operation} failed: ${message}`);
+      this.toastr.warning(`${serviceName}: ${operation} failed: ${message}`);
       // Let the app keep running by returning a safe result.
       return of( result );
     };

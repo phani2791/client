@@ -54,11 +54,11 @@ export class LoginComponent implements OnInit {
   }
 
   getAllUsers() {
-    this.api.allUsers('/users', {}).subscribe(result => console.log(result));
+    this.api.get('/users', {}).subscribe(result => console.log(result));
   }
 
   getMe() {
-    this.api.allUsers('/users/me', {}).subscribe(result => this.currentUser = result);
+    this.api.get('/users/me', {}).subscribe(result => this.currentUser = result);
   }
   ngOnInit() {
   }
