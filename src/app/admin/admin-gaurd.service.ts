@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, CanLoad, Route, Router, RouterStateSnapshot} from '@angular/router';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../services/http/auth.service';
 import {StorageService} from '../services/storage.service';
 import {ApiService} from '../services/api.service';
 
@@ -24,24 +24,20 @@ export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   canLoad(route: Route): boolean {
-    let url = `/${route.path}`;
+    const url = `/${route.path}`;
     return this.checkLogin(url);
   }
 
-  checkLogin(url: string): boolean {
-
+  checkLogin(url: string): any {
     if ((this.storageService.session.getItem('token')) && /^\/admin/i.test(url)) {
-
       return this.checkSession(url);
     } else {
-      console.log('no token');
       this.router.navigate(['/home/login']);
       return true;
     }
   }
 
-
-  async checkSession(url: string): Promise<any> {
+  async checkSession(url: string) {
     const response = await this.apiService.get('/users/me', {});
     return response.toPromise().then(data => {
       if ((data['role'] === 'admin') && /^\/admin/i.test(url)) {
@@ -52,7 +48,5 @@ export class AdminAuthGuard implements CanActivate, CanActivateChild, CanLoad {
         return false;
       }
     })
-
-
   }
 }

@@ -9,7 +9,6 @@ import {StorageService} from '../services/storage.service';
 export class AdminComponent {
   constructor(private  router: Router, private storageService: StorageService) {
     this.router.navigate(['/admin/home']);
-
   }
 
   navigate(path) {

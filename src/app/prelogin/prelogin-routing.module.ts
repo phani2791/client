@@ -5,8 +5,8 @@ import {HomeComponent} from './home/home.component';
 import {LoginComponent} from './login/login.component';
 import {PreloginComponent} from './prelogin.component';
 import {SignupComponent} from './signup/signup.component';
-import {AuthGuard} from '../auth-guard.service';
-import {AuthService} from '../auth.service';
+import {AuthGuard} from '../services/http/auth-guard.service';
+import {AuthService} from '../services/http/auth.service';
 
 const preLoginRoutes: Routes = [
   {

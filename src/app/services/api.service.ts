@@ -5,8 +5,8 @@ import {Observable} from 'rxjs/Observable';
 import {catchError} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
 
-import {HandleError, HttpErrorHandler} from '../http-error-handler.service';
-import {AuthService} from '../auth.service';
+import {HandleError, HttpErrorHandler} from './http/http-error-handler.service';
+import {AuthService} from './http/auth.service';
 
 const httpOptions = {
   headers: new HttpHeaders({

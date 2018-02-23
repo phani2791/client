@@ -10,8 +10,8 @@ import {PreloginRoutingModule} from './prelogin-routing.module';
 import {PreloginComponent} from './prelogin.component';
 import {SignupComponent} from './signup/signup.component';
 import {ApiService} from '../services/api.service';
-import {StorageService} from '../services/storage.service';
 import {BrowserService} from '../services/browser.service';
+import {StorageService} from '../services/storage.service';
 
 @NgModule({
   imports: [
