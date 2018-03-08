@@ -26,7 +26,13 @@ export class SignupComponent implements OnInit {
         label: 'Email address',
         placeholder: 'Enter email',
         required: true
-      }
+      },
+      validators: {
+        email: {
+          expression: (c) => /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(c.value),
+          message: (error, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid Email Address`,
+        },
+      },
     },
     {
       key: 'password',

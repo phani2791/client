@@ -36,8 +36,12 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   async checkSession(url: string) {
     const response = await this.apiService.get('/users/me', {});
     return response.toPromise().then(data => {
+      console.log(data)
       if ((data['role'] === 'admin') && /^\/home/i.test(url)) {
         this.router.navigate(['/admin/home']);
+        return true;
+      } else if ((data['role'] === 'user') && /^\/home/i.test(url)) {
+        this.router.navigate(['/user/home']);
         return true;
       } else {
         this.router.navigate(['/home/login']);

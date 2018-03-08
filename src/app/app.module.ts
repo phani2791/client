@@ -27,6 +27,7 @@ import {ConfigService} from './services/config.service';
 import {NgProgressModule} from '@ngx-progressbar/core';
 import {NgProgressHttpModule} from '@ngx-progressbar/http';
 import {NgProgressRouterModule} from '@ngx-progressbar/router';
+import {UserModule} from './user/user.module';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import {NgProgressRouterModule} from '@ngx-progressbar/router';
     TableModule,
     SidebarModule.forRoot(),
     AdminModule,
+    UserModule,
     AppRoutingModule
   ],
   providers: [

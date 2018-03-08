@@ -1,24 +1,13 @@
 <div class="row vertical-center-row">
   <div class=" col-md-4 col-md-offset-4">
-    <form [formGroup]="form" (ngSubmit)="submit(userModel)">
-      <formly-form [model]="userModel" [fields]="userFields">
+    <form [formGroup]="form" (ngSubmit)="submit(form,userModel)">
+      <formly-form [model]="userModel" [fields]="userFields" [options]="options" [form]="form">
         <a class="pull-right" (click)="navigate('/home/forgotpassword')">Forgot Password</a>
         <br>
         <br>
-        <button type="submit" class="btn btn-block btn-primary">Submit</button>
+        <button type="submit" class="btn btn-block btn-primary" [disabled]="!form.valid">Submit</button>
       </formly-form>
 
     </form>
   </div>
 </div>
-<!--<div class="row">-->
-<!--<div class=" col-md-12">-->
-<!--<div class="col-md-6">-->
-<!--<button type="button" (click)="getAllUsers()" class="btn btn-md btn-info">Get Users</button>-->
-<!--<button type="button" (click)="getMe()" class="btn btn-md btn-success">Get ME</button>-->
-<!--</div>-->
-<!--<div class="col-md-6" *ngIf="currentUser">-->
-<!--<pre>{{currentUser | json}}</pre>-->
-<!--</div>-->
-<!--</div>-->
-<!--</div>-->

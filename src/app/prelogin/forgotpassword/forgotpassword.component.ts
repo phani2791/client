@@ -1,10 +1,7 @@
-import {
-  Component,
-  OnInit
-}                          from '@angular/core';
-import {FormGroup}         from '@angular/forms';
-import {Router}            from '@angular/router';
-import {FormlyFieldConfig} from '@ngx-formly/core';
+import {Component, OnInit} from '@angular/core';
+import {FormGroup} from '@angular/forms';
+import {Router} from '@angular/router';
+import {FormlyFieldConfig, FormlyFormOptions} from '@ngx-formly/core';
 
 @Component({
   selector: 'app-forgotpassword',
@@ -23,9 +20,14 @@ export class ForgotpasswordComponent implements OnInit {
       label: 'Email address',
       placeholder: 'Enter email',
       required: true
-    }
+    }, validators: {
+      email: {
+        expression: (c) => /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(c.value),
+        message: (error, field: FormlyFieldConfig) => `"${field.formControl.value}" is not a valid Email Address`,
+      },
+    },
   }];
-
+  options: FormlyFormOptions = {};
   constructor(private  router: Router) {
   }
 

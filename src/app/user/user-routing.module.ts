@@ -1,7 +1,19 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {UserhomeComponent} from './userhome/userhome.component';
+import {UserAuthGaurdService} from './user-auth-gaurd.service';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: 'user',
+    component: UserhomeComponent,
+    canActivate: [UserAuthGaurdService],
+    children: [
+      {path: 'home', component: UserhomeComponent}
+    ]
+  }
+];
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

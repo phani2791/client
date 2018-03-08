@@ -2,33 +2,35 @@
   <div class="panel panel-default">
     <div class="panel-body">
       <div class="content-row">
-        <!-- Container for sidebar(s) + page content -->
-        <ng-sidebar-container style="height: 100vh;">
-          <!-- A sidebar -->
-          <ng-sidebar [(opened)]="opened" position="right">
-            <form [formGroup]="form" (ngSubmit)="submit()">
-              <formly-form [model]="model" [fields]="userFields" [options]="options" [form]="form">
-                <button type="submit" class="btn btn-primary btn-block submit-button">Submit</button>
-              </formly-form>
-            </form>
-          </ng-sidebar>
-          <!-- Page content -->
-          <div ng-sidebar-content>
             <div class="col-md-12">
               <h2>Users Dashboard</h2>
-              <button (click)="_toggleSidebar()" class="btn btn-md btn-success">Toggle sidebar</button>
               <ngx-table
                 [configuration]="tableConfig"
                 [data]="data"
                 [columns]="columns"
                 [pagination]="pagination">
+
+                <ng-template let-row>
+                  <td>
+                    <span class="font-small">{{row.email}}</span>
+                  </td>
+                  <td>
+                    <span class="font-small">{{row.name}}</span>
+                  </td>
+                  <td>
+                    <span class="font-small">{{row.role}}</span>
+                  </td>
+                  <td>
+                    <div class="circle" [style.color]="row.active? 'green' : 'red'"></div>
+                  </td>
+                  <td>
+                    <button class="btn btn-primary btn-sm"
+                            (click)=showModal()>Edit
+                    </button>
+                  </td>
+                </ng-template>
               </ngx-table>
             </div>
-          </div>
-
-
-        </ng-sidebar-container>
-
 
       </div><!-- panel body -->
     </div>

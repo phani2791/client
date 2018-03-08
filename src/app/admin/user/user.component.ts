@@ -15,7 +15,9 @@ export class UserComponent implements OnInit {
   columns = [
     {key: 'email', title: 'Email'},
     {key: 'name', title: 'Name'},
-    {key: 'role', title: 'Role'}
+    {key: 'role', title: 'Role'},
+    {key: 'active', title: 'Active'},
+    {key: 'active', title: 'Edit'},
   ];
   data = [];
   opened = false;

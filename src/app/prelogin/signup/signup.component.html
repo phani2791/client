@@ -2,7 +2,7 @@
   <div class=" col-md-4 col-md-offset-4">
     <form [formGroup]="form" (ngSubmit)="submit()">
       <formly-form [model]="model" [fields]="userFields" [options]="options" [form]="form">
-        <button type="submit" class="btn btn-primary btn-block submit-button">Submit</button>
+        <button type="submit" class="btn btn-primary btn-block submit-button" [disabled]="!form.valid">Submit</button>
       </formly-form>
     </form>
 
